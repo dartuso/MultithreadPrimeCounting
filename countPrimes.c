@@ -17,14 +17,17 @@
 
 int nThreads = 1;
 pthread_mutex_t lock;
+pthread_t *mainthreads;
 pthread_t *threads;
 int counter = 0;
-bool foundNonPrime = false;
+volatile bool foundNonPrime = false;
 
 /// primality test, if toCheck is prime, return 1, else return 0
 int isPrime(int64_t toCheck);
 
 void *primeChecker(void *arg);
+
+void *primeCall(void *arg);
 
 struct ThreadArguments {
 	int64_t startNumber;
@@ -57,12 +60,14 @@ int main(int argc, char **argv) {
     }*/
 
 	threads = (pthread_t *) malloc(sizeof(pthread_t) * nThreads);
+	mainthreads = (pthread_t *) malloc(sizeof(pthread_t) * nThreads);
 
+	int pid[nThreads];
 	/// count the primes
 	printf("Counting primes using %d thread%s.\n",
 	       nThreads, nThreads == 1 ? "s" : "");
 	int64_t count = 0;
-	while (1) {
+	for (int i = 0;  ; ++i) {
 		int64_t num;
 		if (1 != scanf("%ld", &num)) {
 			break;
@@ -71,6 +76,9 @@ int main(int argc, char **argv) {
 #if DEBUG
 		printf("Checking number %ld\n", num);
 #endif
+
+		//Call another thread to check if it is prime
+		pid[k] = pthread_create(&mainthreads[i], NULL, primeChecker, (void *) num);
 
 		if (isPrime(num)){
 #if DEBUG2
@@ -90,6 +98,12 @@ int main(int argc, char **argv) {
 	return 0;
 }
 
+void *primeCall(void *arg) {
+	int64_t num = (int64_t) arg;
+
+	if()
+}
+
 int isPrime(int64_t toCheck) {
 	int pid[nThreads];
 	struct ThreadArguments myThreadArgs[nThreads];
@@ -103,7 +117,7 @@ int isPrime(int64_t toCheck) {
 
 #if DEBUG
 	printf("Max is %ld\n", max);
-#endif+
+#endif
 
 
 	if (max < 100){
@@ -182,5 +196,7 @@ void *primeChecker(void *arg) {
 
 	pthread_exit((void *) 1);
 }
+
+
 
 

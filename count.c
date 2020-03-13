@@ -1,7 +1,14 @@
+/*457 Assignment 3
+ * Daniel Artuso - 30029826
+ *
+ *
+ *
+ *
+ * */
 /// counts number of primes from standard input
 ///
 /// compile with:
-///   $ gcc countPrimes.c -O2 -o count -lm -lpthread
+///   $ gcc count.c -O2 -o count -lm -lpthread
 
 ///
 #include <stdio.h>
@@ -103,7 +110,7 @@ int isPrime(int64_t toCheck) {
 
 #if DEBUG
 	printf("Max is %ld\n", max);
-#endif+
+#endif
 
 
 	if (max < 100){
@@ -175,7 +182,7 @@ void *primeChecker(void *arg) {
 			printf("Found prime factorization at %ld!\n", start);
 #endif
 			foundNonPrime = true;
-			return 0;
+			pthread_exit(0);
 		}
 		start += 6;
 	}

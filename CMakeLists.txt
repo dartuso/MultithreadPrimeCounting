@@ -3,7 +3,7 @@ project(457ASG3 C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(457ASG3 countPrimes.c)
+add_executable(457ASG3 count.c)
 
 #pthreads
 set(THREADS_PREFER_PTHREAD_FLAG ON)
